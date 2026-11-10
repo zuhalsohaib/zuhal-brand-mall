@@ -1,0 +1,19 @@
+import React,{useState,useEffect,useRef,useMemo} from "react";
+import {Card,Eyebrow,Reveal} from "../components/ui.jsx";
+import {CATS,P} from "../data.js";
+import {B1,Ic,money} from "../helpers.jsx";
+
+export function Shop({x}){const [q,setQ]=useState("");const [s,setS]=useState("new");const [mx,setMx]=useState(260);const [busy,setBusy]=useState(false);const first=useRef(true);
+useEffect(()=>{if(first.current){first.current=false;return}setBusy(true);const t=setTimeout(()=>setBusy(false),320);return()=>clearTimeout(t)},[x.cat,s,mx]);
+const l=useMemo(()=>{let a=P.filter(p=>(x.cat==="All"||p.c===x.cat)&&p.p<=mx&&(p.n+" "+p.c).toLowerCase().includes(q.toLowerCase()));if(s==="lo")a=[...a].sort((m,n)=>m.p-n.p);if(s==="hi")a=[...a].sort((m,n)=>n.p-m.p);return a},[q,s,mx,x.cat]);
+const cnt=c=>P.filter(p=>c==="All"||p.c===c).length;
+return <section className="mx-auto max-w-6xl px-5 py-10"><Reveal><Eyebrow>The collection</Eyebrow><h1 className="font-display text-6xl md:text-8xl">Shop <em>all</em></h1></Reveal>
+<div className="glass sticky z-30 my-8 animate-fade-down space-y-4 rounded-[2rem] p-4 md:p-5" style={{top:"calc(env(safe-area-inset-top,0px) + 76px)"}}>
+<div className="flex flex-wrap items-center gap-3"><label className="relative min-w-[220px] flex-1"><span className="sr-only">Search products</span><span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-muted"><Ic n="search"/></span><input value={q} onChange={e=>setQ(e.target.value)} type="search" placeholder="Search by name or category" className="w-full rounded-full border-2 border-line bg-paper py-3 pl-12 pr-4 transition-all duration-300 focus:border-orchid focus:outline-none focus:ring-4 focus:ring-petal"/></label>
+<select value={s} onChange={e=>setS(e.target.value)} aria-label="Sort" className="rounded-full border-2 border-line bg-paper px-5 py-3 transition-all duration-300 focus:border-orchid focus:outline-none"><option value="new">Featured</option><option value="lo">Price: low to high</option><option value="hi">Price: high to low</option></select>
+<label className="flex items-center gap-3 rounded-full border-2 border-line bg-paper px-5 py-3 text-sm font-semibold">Up to {money(mx)}<input type="range" min="20" max="260" step="10" value={mx} onChange={e=>setMx(+e.target.value)} aria-label="Maximum price" className="w-28 accent-[#F2788F]"/></label></div>
+<div className="no-scrollbar -mx-1 flex gap-2 overflow-x-auto px-1 pb-1" role="group" aria-label="Category">{["All",...CATS].map(c=><button key={c} aria-pressed={x.cat===c} onClick={()=>x.setCat(c)} className={`shrink-0 rounded-full border-2 px-5 py-2 text-sm font-semibold transition-all duration-300 active:scale-95 ${x.cat===c?"grad border-transparent text-white shadow-lg":"border-line bg-card hover:border-ink"}`}>{c} <span className="opacity-70">{cnt(c)}</span></button>)}</div></div>
+<p className="mb-5 text-muted" aria-live="polite">{busy?"Updating…":l.length+" styles"}</p>
+{busy?<div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6 lg:grid-cols-4">{Array.from({length:8}).map((_,i)=><div key={i}><div className="aspect-[4/5] animate-shimmer rounded-[1.75rem] bg-[linear-gradient(90deg,var(--petal),var(--card),var(--petal))] bg-[length:200%_100%]"/><div className="mt-3 h-4 w-2/3 animate-shimmer rounded-full bg-[linear-gradient(90deg,var(--petal),var(--card),var(--petal))] bg-[length:200%_100%]"/></div>)}</div>:
+l.length?<div className="grid animate-page grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 md:gap-x-6 lg:grid-cols-4">{l.map((p,i)=><Card key={p.id} p={p} x={x} i={i}/>)}</div>:
+<div className="animate-page rounded-[2rem] border-2 border-dashed border-line p-14 text-center"><h2 className="font-display text-4xl">No styles match your filters</h2><p className="my-3 text-muted">Try another word, a higher price limit or a different category.</p><button className={B1} onClick={()=>{setQ("");setMx(260);x.setCat("All")}}>Clear filters</button></div>}</section>}

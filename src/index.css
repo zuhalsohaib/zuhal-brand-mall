@@ -1,0 +1,35 @@
+:root{--ink:#2A1245;--paper:#FFF7FC;--card:#FFFFFF;--rose:#B3186F;--orchid:#8A3FD6;--apricot:#F6D58E;--petal:#F8E7F7;--muted:#6B5681;--line:#EBD5EE;--glow:rgba(242,120,143,.18);--glow2:rgba(60,185,245,.16);color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);box-sizing:border-box}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#FBF0FF;--paper:#150B22;--card:#221238;--rose:#FF8AC8;--orchid:#C9A2FF;--apricot:#F6D58E;--petal:#33194F;--muted:#CDB8E3;--line:#4A2A6B;--glow:rgba(242,120,143,.22);--glow2:rgba(60,185,245,.22);color-scheme:dark}}
+:root[data-theme="dark"]{--ink:#FBF0FF;--paper:#150B22;--card:#221238;--rose:#FF8AC8;--orchid:#C9A2FF;--apricot:#F6D58E;--petal:#33194F;--muted:#CDB8E3;--line:#4A2A6B;--glow:rgba(242,120,143,.22);--glow2:rgba(60,185,245,.22);color-scheme:dark}
+html{scroll-padding-top:calc(90px + env(safe-area-inset-top,0px));scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:Manrope,system-ui,sans-serif;transition:background .4s,color .4s;-webkit-font-smoothing:antialiased}
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(55% 45% at 8% 0%,var(--glow),transparent),radial-gradient(45% 40% at 98% 12%,var(--glow2),transparent),radial-gradient(60% 50% at 50% 105%,rgba(160,148,192,.18),transparent)}
+:focus-visible{outline:3px solid var(--orchid);outline-offset:3px}
+.glass{background:color-mix(in srgb,var(--card) 74%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid color-mix(in srgb,var(--line) 70%,transparent)}
+.glass-dk{background:rgba(255,255,255,.1);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.25)}
+.grad{background-image:linear-gradient(90deg,#F2788F 0%,#3CB9F5 100%)}
+.aurora{background-image:radial-gradient(60% 80% at 12% 10%,rgba(255,255,255,.22),transparent 60%),radial-gradient(55% 70% at 92% 90%,rgba(255,255,255,.18),transparent 60%),linear-gradient(90deg,#F2788F 0%,#3CB9F5 100%)}
+.hero-aurora{background-image:radial-gradient(50% 60% at 8% 12%,rgba(255,255,255,.25),transparent 65%),radial-gradient(45% 55% at 95% 20%,rgba(255,255,255,.2),transparent 65%),linear-gradient(90deg,#F2788F 0%,#3CB9F5 100%)}
+.shine{background-size:220% 100%;animation:shine 7s linear infinite}
+@keyframes shine{0%{background-position:0% 0}100%{background-position:220% 0}}
+::selection{background:#F2788F;color:#fff}
+.gtext{background-image:linear-gradient(90deg,#F2788F,#3CB9F5);-webkit-background-clip:text;background-clip:text;color:transparent}
+.no-scrollbar{scrollbar-width:none}.no-scrollbar::-webkit-scrollbar{display:none}
+html.intro-on{overflow:hidden}
+html.intro-on .animate-fade-down,html.intro-on .animate-page,html.intro-on .animate-soft-in,html.intro-on .animate-soft-fade,html.intro-on .animate-rod{animation-play-state:paused}
+@keyframes curtain{0%{clip-path:inset(0 0 0 0)}100%{clip-path:inset(100% 0 0 0)}}
+.curtain-out{animation:curtain 1.05s cubic-bezier(.77,0,.18,1) forwards;pointer-events:none}
+@keyframes dropIn{0%{opacity:0;transform:translateY(-46px)}100%{opacity:1;transform:none}}
+@keyframes sparkFall{0%{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(0)}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + 52px)) scale(.3) rotate(140deg)}}
+@keyframes lookL{from{transform:none}to{transform:translateX(-50%)}}
+@keyframes barGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes lookR{from{transform:translateX(-50%)}to{transform:none}}
+.look-row{animation:lookL 80s linear infinite}.look-row.rev{animation-name:lookR;animation-duration:95s}
+.look-wrap:hover .look-row{animation-play-state:paused}
+@keyframes glowPulse{0%,100%{box-shadow:0 0 0 0 rgba(242,120,143,.45)}50%{box-shadow:0 0 0 14px rgba(242,120,143,0)}}
+.glow-pulse{animation:glowPulse 2.6s ease-out infinite}
+@media (prefers-reduced-motion:reduce){.shine{animation:none}.look-row{animation:none!important}.glow-pulse{animation:none!important}*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
